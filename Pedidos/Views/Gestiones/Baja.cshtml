@@ -1,0 +1,77 @@
+﻿@model Pedidos.ViewModels.GestionesDetalleVM
+
+@{
+    ViewBag.Title = String.Format("Baja de la gestión {0}", Model.GestionId);
+}
+
+<br />
+<h2>@ViewBag.Title</h2>
+<h4>¿Confirma la baja del registro?</h4>
+
+<div>
+    <br />
+    <h4>Detalle</h4>
+    <dl class="dl-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </dl>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GestionId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GestionId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaGestion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaGestion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClienteId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClienteId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Observaciones)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Observaciones)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            @Html.HiddenFor(model => model.GestionId)
+            @Html.HiddenFor(model => model.FechaGestion)
+            @Html.HiddenFor(model => model.ClienteId)
+            @Html.HiddenFor(model => model.UserName)
+            @Html.HiddenFor(model => model.Observaciones)
+            @Html.HiddenFor(model => model.VolverA)
+            <input type="submit" value="Confirmar Baja" class="btn btn-danger" />
+            <a href="@Model.VolverA" class="btn btn-default">Volver al Listado</a>
+        </div>
+    }
+</div>
+<br />

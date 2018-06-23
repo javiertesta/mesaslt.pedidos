@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Informes";
+}
+
+<div class="jumbotron">
+    <h1>@ViewBag.Title</h1>
+    <p class="lead">Liste pedidos de acuerdo a sus necesidades.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-6">
+        <p>@Html.ActionLink("Pedidos activos", "PedidosActivos", "Informes", new { }, new { @class = "btn btn-default btn-block" })</p>
+        <p>@Html.ActionLink("Pedidos para corte de laminado", "CorteDeLaminado", "Informes", new { }, new { @class = "btn btn-default btn-block" })</p>
+        <p>@Html.ActionLink("Pedidos demorados", "PedidosDemorados", "Informes", new { }, new { @class = "btn btn-default btn-block" })</p>
+        <p>@Html.ActionLink("Pedidos de un cliente", "Cliente", "Informes", new { }, new { @class = "btn btn-default btn-block" })</p>
+        <p>@Html.ActionLink("Pedidos de una zona", "Zona", "Informes", new { }, new { @class = "btn btn-default btn-block" })</p>
+    </div>
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-3">
+    </div>
+</div>
+<br />

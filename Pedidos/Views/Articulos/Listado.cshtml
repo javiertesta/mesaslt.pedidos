@@ -1,0 +1,74 @@
+﻿@model Pedidos.ViewModels.ArticulosIndexVM
+@using CustomExtensions;
+@using System.Web.Mvc.Html;
+@using Pedidos.Models;
+@using PagedList.Mvc;
+
+@{
+    var counter = 0;
+    Tuple<string[], Dictionary<string, object>> articuloPreparado;
+    var funciones = new Pedidos.Controllers.Informes.FuncionesDeInformes();
+}
+
+<br />
+<h2>@Model.Titulo</h2>
+
+@using (Html.BeginForm("Listado", "Articulos", FormMethod.Post, new { @class = "form-inline" }))
+{
+    <p>
+        @Html.TextBox("newSearch", Request.QueryString.Get("search"), new { placeholder = "Texto a buscar.", @class = "form-control" }) en @Html.DropDownList("searchIn", Model.SearchInList, new { @class = "form-control" })
+        <input type="submit" name="command" value="Buscar" class="btn btn-default" />
+        <input type="hidden" name="queryString" value="@Request.QueryString" />
+        @Html.ActionLink("Nuevo Articulo", "Crear_Paso1_SeleccionaTipo", "Articulos", new { volverA = Request.RawUrl }, new { @class = "btn btn-primary" })
+    </p>
+}
+
+@using (Html.BeginForm("Select", "Articulos", new { volvera = Model.VolverA }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.VolverA)
+
+    <style type="text/css">
+        .tipodearticulo {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 32px;
+            vertical-align: middle;
+        }
+
+        .contenido {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .contenidodestacado {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 18px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+    </style>
+
+    foreach (var item in Model.Items)
+    {
+        articuloPreparado = funciones.RescataArticulo(item);
+        articuloPreparado.Item2.Add("Contador", counter);
+        articuloPreparado.Item2.Add("ArticuloId", item.ArticuloId);
+        Html.RenderPartial("Item", articuloPreparado);
+        counter++;
+    }
+
+    <input type="submit" name="command" value="Editar Seleccionados" class="btn btn-default" />
+    <input type="submit" name="command" value="Borrar Seleccionados" class="btn btn-default" />
+
+    <br />
+    <br />
+    
+}
+
+<div class="text-center text-info">
+    - - Página @(Model.Items.PageCount < Model.Items.PageNumber ? 0 : Model.Items.PageNumber) de @Model.Items.PageCount - -
+</div>
+
+@Html.PagedListPager(Model.Items, pagina => Url.Action(Model.Action, Model.Controller,
+Request.QueryString.toRouteValueDictionary().Merge(new RouteValueDictionary(new { @page = pagina }))))

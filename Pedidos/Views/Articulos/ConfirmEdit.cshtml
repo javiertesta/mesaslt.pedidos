@@ -1,0 +1,84 @@
+﻿@model Pedidos.ViewModels.ArticulosConfirmEditVM
+
+@{
+    ViewBag.Title = "Advertencia";
+    string[] arrayCodigos = Model.Codigos.Split(Char.Parse(","));
+}
+
+<br />
+<h2>@ViewBag.Title</h2>
+<h4>Se han modificado artículos que están solicitados en pedidos vigentes. Si confirma los cambios, dichos pedidos perderán la asociación y serán marcados como artículos fuera de lista.</h4>
+<br />
+
+@using (Html.BeginForm("Editar_Paso3_RecibeConfirmacion", "Articulos", FormMethod.Post, new { @class = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ReturnURL);
+
+    <div class="form-horizontal">
+        
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Códigos afectados</h4>
+                <hr />
+                <ul class="list-group">
+                    @for (var i = 0; i < arrayCodigos.Count(); i++)
+                    {
+                        <li class="list-group-item">@arrayCodigos[i]</li>
+                    }
+                </ul>
+                <input type="submit" value="Confirmar" class="btn btn-danger" />@Html.Raw("&nbsp;")<a href="@Model.ReturnURL" class="btn btn-default">Cancelar</a>
+            </div>
+            <div class="col-md-8"></div>
+        </div>
+        
+        @for (var i = 0; i < Model.items.Count; i++)
+        {
+            
+            @Html.HiddenFor(model => model.items[i].ArticuloId);
+            @Html.HiddenFor(model => model.items[i].RowVersion);
+            @Html.HiddenFor(model => model.items[i].TipoDeArticulo);
+            @Html.HiddenFor(model => model.items[i].CodigoTango);
+            @Html.HiddenFor(model => model.items[i].Particularidades);
+            
+            if (Model.items[i].TipoDeArticulo == "Tapa")
+            {
+                @Html.HiddenFor(model => model.items[i].TAP_Tipo);
+                @Html.HiddenFor(model => model.items[i].TAP_Medida);
+                @Html.HiddenFor(model => model.items[i].TAP_Melamina);
+                @Html.HiddenFor(model => model.items[i].TAP_BOR_Tipo);
+                @Html.HiddenFor(model => model.items[i].TAP_BOR_Espesor);
+            }
+
+            if (Model.items[i].TipoDeArticulo == "Base")
+            {
+                @Html.HiddenFor(model => model.items[i].BAS_Modelo);
+                @Html.HiddenFor(model => model.items[i].BAS_Espesor);
+                @Html.HiddenFor(model => model.items[i].BAS_Proveedor);
+            }
+            
+            if (Model.items[i].TipoDeArticulo == "Vitrea")
+            {
+                @Html.HiddenFor(model => model.items[i].VIT_Tipo);
+                @Html.HiddenFor(model => model.items[i].VIT_Medida);
+                @Html.HiddenFor(model => model.items[i].VIT_Transparente);
+            }
+            
+            if (Model.items[i].TipoDeArticulo == "FueraDeLista")
+            {
+                @Html.HiddenFor(model => model.items[i].FUE_Titulo);
+                @Html.HiddenFor(model => model.items[i].FUE_Detalle);
+            }
+            
+        }
+        
+    </div>
+}
+
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/CustomScripts/date-functions.js")
+    @Scripts.Render("~/Scripts/CustomScripts/date-validator.js")
+}

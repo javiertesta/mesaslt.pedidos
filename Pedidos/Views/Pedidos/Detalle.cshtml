@@ -1,0 +1,292 @@
+﻿@using Pedidos.Models;
+@model Pedidos.Models.Pedido
+
+@{
+    ViewBag.Title = String.Format("Detalle del pedido {0}", Model.PedidoId.ToString());
+}
+
+<br />
+<h2>@ViewBag.Title</h2>
+
+<br />
+<div class="row">
+    <div class="col-md-4">
+        <h4>Datos del cliente</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Gestion.Cliente.ClienteId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Gestion.Cliente.ClienteId)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Gestion.Cliente.RazonSocial)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Gestion.Cliente.RazonSocial)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Gestion.Cliente.ZonaNombre)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Gestion.Cliente.ZonaNombre)
+            </dd>
+        </dl>
+    </div>
+    <div class="col-md-4">
+        <h4>Datos de la gestión</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Gestion.GestionId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Gestion.GestionId)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Gestion.FechaGestion)
+            </dt>
+            <dd>
+                @Model.Gestion.FechaGestion.ToShortDateString()
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Gestion.Observaciones)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Gestion.Observaciones)
+            </dd>
+        </dl>
+    </div>
+    <div class="col-md-4">
+        <h4>Archivos adjuntos</h4>
+        <hr />
+
+        @if (Model.ArchivosAdjuntos == null || Model.ArchivosAdjuntos.Count == 0)
+        {
+            <dl class="dl-horizontal">
+                <dt>
+                    Archivos
+                </dt>
+                <dd>
+                    Sin archivos adjuntos.
+                </dd>
+            </dl>
+        }
+
+        else
+        {
+            <dl class="dl-horizontal">
+                @foreach (var adjunto in Model.ArchivosAdjuntos)
+                {
+                    <dt>
+                        @adjunto.NombreOriginal
+                    </dt>
+                    <dd>
+                        <a href="@adjunto.URL">Ver</a><br />
+                        @adjunto.FechaCreacion.ToString("dd/MM/yyyy hh:mm")<br />
+                        @adjunto.Tipo<br />
+                    </dd>
+                }
+            </dl>
+        }
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Datos del pedido</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.PedidoId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PedidoId)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.FechaEntrega)
+            </dt>
+            <dd>
+                @(Model.FechaEntrega.HasValue ? Model.FechaEntrega.Value.ToShortDateString() : "")
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Referencia)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Referencia)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.EstructuraSolicitada)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EstructuraSolicitada)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Observaciones)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Observaciones)
+            </dd>
+        </dl>
+    </div>
+    <div class="col-md-6">
+        <h4>Datos del artículo</h4>
+        <hr />
+        <dl class="dl-horizontal">
+
+            @if (Model.Articulo is Tapa)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Tapa).TipoNombre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Tapa).TipoNombre)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Tapa).Medida)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Tapa).Medida)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Tapa).Laminado_MuestrarioId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Tapa).Laminado_MuestrarioId)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Tapa).Laminado_CodigoId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Tapa).Laminado_CodigoId)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Tapa).Melamina)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Tapa).Melamina)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Tapa).Borde.TipoNombre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Tapa).Borde.TipoNombre)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Tapa).Borde.EspesorNombre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Tapa).Borde.EspesorNombre)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Tapa).Borde.ColorNombre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Tapa).Borde.ColorNombre)
+                </dd>
+            }
+
+            @if (Model.Articulo is Base)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Base).Modelo)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Base).Modelo)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Base).EspesorNombre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Base).EspesorNombre)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Base).ColorNombre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Base).ColorNombre)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Base).ProveedorNombre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Base).ProveedorNombre)
+                </dd>
+            }
+
+            @if (Model.Articulo is Vitrea)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Vitrea).Tipo)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Vitrea).Tipo)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Vitrea).Medida)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Vitrea).Medida)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as Vitrea).Transparente)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as Vitrea).Transparente)
+                </dd>
+            }
+
+            @if (Model.Articulo is FueraDeLista)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as FueraDeLista).Titulo)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as FueraDeLista).Titulo)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => (model.Articulo as FueraDeLista).Detalle)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => (model.Articulo as FueraDeLista).Detalle)
+                </dd>
+            }
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Articulo.Particularidades)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Articulo.Particularidades)
+            </dd>
+
+        </dl>
+    </div>
+</div>
+
+<br />
+
+<p>
+    <a href="@ViewBag.ReturnURL" class="btn btn-primary">Regresar</a>
+</p>

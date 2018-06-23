@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Seguimiento de pedidos";
+}
+
+<div class="jumbotron">
+    <h1>@ViewBag.Title</h1>
+    <p class="lead">Especifique en qué punto del proceso de producción se encuentra cada una de las unidades que integran un determinado pedido.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Por Pedido</h2>
+        <p>Controle el seguimiento de un determinado pedido.</p>
+        <p>@Html.RouteLink("Acceda »", "SeguimientoPorPedido", new { }, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Por Listado</h2>
+        <p>El sistema guarda el detalle de los pedidos que se emiten en cada listado. Controle desde este módulo el seguimiento de los pedidos de un determinado listado.</p>
+        <p>@Html.RouteLink("Acceda »", "SeguimientoPorListado", new { }, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Por Cliente</h2>
+        <p>Controle el seguimiento de los pedidos de un determinado cliente.</p>
+        <p>@Html.RouteLink("Acceda »", "SeguimientoPorCliente", new { }, new { @class = "btn btn-default" })</p>
+    </div>
+</div>
+
+<br />

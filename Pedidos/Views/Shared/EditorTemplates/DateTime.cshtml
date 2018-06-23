@@ -1,0 +1,33 @@
+﻿@model Nullable<DateTime>
+@using System.Globalization;
+
+@{
+    var _fieldName = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    var _fieldId = ViewData.TemplateInfo.GetFullHtmlFieldId("");
+    var _displayName = Html.DisplayNameForModel();
+    var _shortDatePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+    var _value = "";
+    if (ViewData.ModelMetadata.IsNullableValueType)
+    {
+        if (Model.HasValue)
+        {
+            _value = Model.Value.ToString("d");
+        }
+    }
+    else
+    {
+        _value = ((DateTime)Model).ToString("d");
+    }
+}
+
+@if (ViewData.ModelMetadata.IsNullableValueType) {
+    <input class="form-control text-box single-line" type="text" id="@_fieldId" name="@_fieldName" data-val="true" data-val-customdate="El valor del campo @_displayName no es correcto." data-val-customdate-format="@_shortDatePattern" value="@_value" />
+} else {
+    <input class="form-control text-box single-line" type="text" id="@_fieldId" name="@_fieldName" data-val="true" data-val-required="El campo @_displayName no puede estar vacío." data-val-customdate="El valor del campo @_displayName no es correcto." data-val-customdate-format="@_shortDatePattern" value="@_value" />
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#@_fieldId').datepicker({ dateFormat: getLocaleShortDateFormat(true, true) });
+    });
+</script>

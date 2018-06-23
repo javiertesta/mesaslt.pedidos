@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Informe de pedidos por cliente";
+}
+
+<div class="jumbotron">
+    <h1>@ViewBag.Title</h1>
+    <p class="lead">Ingrese el cliente del cual se listarán sus pedidos.</p>
+</div>
+
+<br />
+
+@using (Html.BeginForm("Cliente", "Informes", FormMethod.Get, new { @class = "form-inline" }))
+{
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-5">
+                            @Html.Editor("id", new { htmlAttributes = new { @class = "form-control", placeholder = "Ingrese el cliente." } })
+                        </div>
+                        <div class="col-md-7">
+                            <input type="submit" value="Continuar" class="btn btn-success" />
+                            <a href="#" class="btn btn-default">Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <br />
+                    @Html.ValidationMessage("id", "", new { @class = "text-danger" })
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+}
+
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/CustomScripts/date-functions.js")
+    @Scripts.Render("~/Scripts/CustomScripts/date-validator.js")
+}

@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Titulo = "Seguimiento por cliente";
+    ViewBag.TextoExplicativo = "Seleccione el cliente sobre el cual trabajará los seguimientos.";
+}
+
+<div class="jumbotron">
+    <h1>@ViewBag.Titulo</h1>
+    <p class="lead">@ViewBag.TextoExplicativo</p>
+</div>
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8" style="text-align:center">
+        @using (Html.BeginRouteForm("SeguimientoPorCliente_Paso3_Cantidades", FormMethod.Post, new { @class = "form-inline" }))
+        {
+            @Html.Label("Código de cliente ", htmlAttributes: new { @class = "control-label" })@Html.Raw("&nbsp;")
+            @Html.Editor("id", new { htmlAttributes = new { @class = "form-control" } })
+            <input type="submit" value="Continuar" class="btn btn-success" />
+            @Html.ActionLink("Cancelar", "Index", "Home", new { }, new { @class = "btn btn-default" } )
+            
+            <div class="form-horizontal">
+                @Html.ValidationMessage("id", new { @class = "text-danger" })
+            </div>
+        }
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/CustomScripts/date-functions.js")
+    @Scripts.Render("~/Scripts/CustomScripts/date-validator.js")
+}

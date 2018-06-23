@@ -1,0 +1,81 @@
+﻿@model Pedidos.ViewModels.GestionesIndexVM
+@using CustomExtensions;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = Model.Titulo;
+}
+
+<br />
+<h2>@Model.Titulo</h2>
+
+@using (Html.BeginForm(Model.ActionMethod, Model.Controller, FormMethod.Post, new { @class = "form-inline" }))
+{
+    <p>
+        @Html.TextBox("newSearch", Request.QueryString.Get("search"), new { @class = "form-control", placeholder = "Texto a buscar." }) en @Html.DropDownList("searchIn", Model.SearchInList, new { @class = "form-control" })
+        <input type="submit" value="Buscar" class="btn btn-default" />
+        @Html.ActionLink("Agregar Gestión", "Alta", new { clienteId = Model.ClienteId, volverA = Request.RawUrl }, new { @class = "btn btn-primary" })
+    </p>
+}
+
+<br />
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLinkwParams(HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.Gestiones.FirstOrDefault().GestionId).ToString()), "Index", new { sort = ViewBag.linkGestionId })
+        </th>
+        <th>
+            @Html.ActionLinkwParams(HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.Gestiones.FirstOrDefault().ClienteId).ToString()), "Index", new { sort = ViewBag.linkClienteId })
+        </th>
+        <th>
+            @Html.ActionLinkwParams(HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.Gestiones.FirstOrDefault().FechaGestion).ToString()), "Index", new { sort = ViewBag.linkFechaGestion })
+        </th>
+        <th>
+            @Html.ActionLinkwParams(HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.Gestiones.FirstOrDefault().UserName).ToString()), "Index", new { sort = ViewBag.linkUserName })
+        </th>
+        <th>
+            @Html.ActionLinkwParams(HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.Gestiones.FirstOrDefault().Observaciones).ToString()), "Index", new { sort = ViewBag.linkObservaciones })
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.Gestiones) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.GestionId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClienteId)
+        </td>
+        <td>
+            @Html.Encode(item.FechaGestion.ToShortDateString())
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Observaciones)
+        </td>
+        <td>
+            <div class="pull-right">
+                <div class="btn-group">
+                    @Html.ActionLink("Detalle", "Detalle", "Gestiones", new { id = item.GestionId, VolverA = Request.RawUrl }, new { @class = "btn btn-default btn-xs" })
+                    @Html.ActionLink("Pedidos", "PorGestion", "Pedidos", new { gestionId = item.GestionId, VolverA = Request.RawUrl }, new { @class = "btn btn-primary btn-xs" })
+                </div>
+                <div class="btn-group">
+                    @Html.ActionLink("Editar", "Modificacion", new { id = item.GestionId, VolverA = Request.RawUrl }, new { @class = "btn btn-default btn-xs" })
+                    @Html.ActionLink("Historial", "Historial", new { id = item.GestionId }, new { @class = "btn btn-default btn-xs" })
+                    @Html.ActionLink("Baja", "Baja", new { id = item.GestionId, VolverA = Request.RawUrl }, new { @class = "btn btn-default btn-xs" })
+                </div>
+            </div>
+        </td>
+    </tr>
+}
+</table>
+
+<div class="text-center text-info">
+    - - Página @(Model.Gestiones.PageCount < Model.Gestiones.PageNumber ? 0 : Model.Gestiones.PageNumber) de @Model.Gestiones.PageCount - -
+</div>
+
+@Html.PagedListPager(Model.Gestiones, page => Url.Action(Model.ActionMethod, Model.Controller,
+Request.QueryString.toRouteValueDictionary().Merge(new RouteValueDictionary(new { @page = page }))))

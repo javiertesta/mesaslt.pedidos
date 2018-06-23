@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Alta de Artículo";
+    string ReturnURL = ViewBag.ReturnURL;
+}
+
+<br />
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Crear_Paso2_Alta", "Articulos", FormMethod.Get, new { @class="form-inline" }))
+{
+    <div class="form-horizontal">
+        <h4>Seleccione el tipo de artículo a dar de alta.</h4>
+        <hr />
+        <br />
+        @Html.DropDownList(
+            "tipo",
+            new List<SelectListItem> { new SelectListItem() { Text = "Tapa", Selected = true },
+                                       new SelectListItem() { Text = "Base" },
+                                       new SelectListItem() { Text = "Vitrea" },
+                                       new SelectListItem() { Text = "Fuera de Lista", Value = "FueraDeLista" }
+                                     },
+             new { @class = "form-control" }
+                          )
+        @Html.Hidden("volvera", ReturnURL)
+        <div class="btn-group">
+            <input type="submit" value="Confirmar" class="btn btn-success" /><a href="@ViewBag.ReturnURL" class="btn btn-default">Cancelar</a>
+        </div>
+    </div>
+}
+
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/CustomScripts/date-functions.js")
+    @Scripts.Render("~/Scripts/CustomScripts/date-validator.js")
+}

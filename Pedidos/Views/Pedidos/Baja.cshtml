@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Baja de pedidos";
+    int[] items = ViewBag.Pedidos;
+}
+
+<br />
+<h2>@ViewBag.Title</h2>
+<h4>¿Confirma la eliminación de los siguientes pedidos?</h4>
+
+<div>
+    <br />
+    <h4>Listado de códigos</h4>
+    
+    @using (Html.BeginForm("BajaPaso2", "Pedidos"))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("VolverA", (string)(ViewBag.VolverA))
+        for (var i = 0; i < items.Count(); i++) { @Html.Hidden(String.Format("Pedidos[{0}]", i), items[i]) }
+        
+        <hr />
+        <dl class="dl-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </dl>
+
+        <div class="row">
+            <div class="col-md-4">
+                <ul class="list-group">
+                    @for (var i = 0; i < items.Count(); i++)
+                    {
+                        <li class="list-group-item">@ViewBag.Pedidos[i]</li>
+                    }
+                </ul>
+            </div>
+            <div class="col-md-8"></div>
+        </div>
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Confirmar" class="btn btn-danger" />
+            <a href="@ViewBag.VolverA" class="btn btn-default">Cancelar</a>
+        </div>
+    }
+</div>
+<br />

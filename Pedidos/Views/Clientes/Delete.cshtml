@@ -1,0 +1,51 @@
+﻿@model Pedidos.ViewModels.ClientesDeleteVM
+
+@{
+    ViewBag.Title = "Confirmación de Baja";
+}
+
+<br />
+<h2>@ViewBag.Title</h2>
+<h4>@String.Format("¿Está seguro que desea dar de baja el cliente {0}?", Model.ClienteId)</h4>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ClienteId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClienteId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ZonaNombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ZonaNombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RazonSocial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RazonSocial)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <input type="submit" value="Confirmar Baja" class="btn btn-danger" />
+            @Html.ActionLink("Cancelar", "Index", "Clientes", new { }, new { @class = "btn btn-default" })
+        </div>
+    }
+    <br />
+
+</div>

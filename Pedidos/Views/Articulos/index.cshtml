@@ -1,0 +1,42 @@
+﻿@{
+    Pedidos.ViewModels.ArticulosIndexVM model =  new Pedidos.ViewModels.ArticulosIndexVM();
+    ViewBag.Title = "Artículos";
+}
+
+<div class="jumbotron">
+    <h1>@ViewBag.Title</h1>
+    <p class="lead">Gestione los artículos de venta que utilizará en el módulo de pedidos.</p>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        @using (Html.BeginForm("Listado", "Articulos", FormMethod.Get, new { @class = "form-inline" }))
+                        {
+                            <p>
+                                @Html.TextBox("search", Request.QueryString.Get("search"), new { placeholder = "Texto a buscar.", @class = "form-control" }) en @Html.DropDownList("searchIn", model.SearchInList, new { @class = "form-control" })
+                                <input type="submit" name="command" value="Buscar" class="btn btn-default" />
+                                @Html.ActionLink("Nuevo Articulo", "Crear_Paso1_SeleccionaTipo", "Articulos", new { volverA = Request.RawUrl }, new { @class = "btn btn-primary" })
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/CustomScripts/date-functions.js")
+    @Scripts.Render("~/Scripts/CustomScripts/date-validator.js")
+}

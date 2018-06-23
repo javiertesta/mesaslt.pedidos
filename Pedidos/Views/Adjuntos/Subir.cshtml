@@ -1,0 +1,49 @@
+﻿@model Pedidos.ViewModels.SubirVM
+
+@{
+    ViewBag.Title = "Subir Archivos Adjuntos";
+}
+
+<h2>@ViewBag.Title</h2>
+<br />
+
+@if (Model.Permitido)
+{
+    using (Html.BeginForm("Subir", "Adjuntos", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.PedidoId);
+        @Html.HiddenFor(model => model.ReturnURL);
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Archivo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" id="Archivo" name="Archivo" />
+                @Html.ValidationMessageFor(model => model.Archivo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br />
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Confirmar" class="btn btn-default" />
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div>
+        <p>No está permitida la subida de archivos para este pedido, el pedido está dado de baja, o se ha alcanzado el límite máximo establecido.</p>
+    </div>
+}
+
+<div>
+    <a href="@Model.ReturnURL">Cancelar</a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/CustomScripts/date-functions.js")
+    @Scripts.Render("~/Scripts/CustomScripts/date-validator.js")
+}

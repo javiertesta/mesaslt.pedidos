@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Pedidos";
+}
+
+<div class="jumbotron">
+    <h1>@ViewBag.Title</h1>
+    <p class="lead">Administre los pedidos que realizan los clientes de la empresa.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <p class="text-center">
+            Utilice el siguiente cuadro de texto para encontrar pedidos que coincidan con los datos ingresados.<br />
+            El sistema buscará en toda la tabla de pedidos y presentará un listado con las coincidencias.<br />
+            Deje el cuadro en blanco para listar todos los registros.<br />
+            <br />
+        </p>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                @using (Html.BeginForm("Todos", "Pedidos", FormMethod.Post, new { role = "form-inline" }))
+                {
+                    <div class="row">
+                        <div class="col-md-7">
+                            @Html.TextBox("nuevaBusqueda", "", new { @class = "form-control", placeholder = "Filtro" })
+                            @Html.Hidden("buscarEn", "all")
+                            @Html.Hidden("comando", "Buscar")
+                        </div>
+                        <div class="col-md-5">
+                            <input type="submit" value="Buscar" class="btn btn-primary pull-left" />
+                            @Html.ActionLink("Alta", "Alta", "Pedidos", new { }, new { @class = "btn btn-default pull-right" })
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+<br />
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <h3>Pedidos Activos</h3>
+        <p>Consulte pedidos activos, que aún no concluyeron su circuito de vida en la empresa.</p>
+        <p>@Html.ActionLink("Por Gestión »", "PorGestion", "Pedidos", new { }, new { @class = "btn btn-default" })</p>
+        <p>@Html.ActionLink("Por Cliente »", "PorCliente", "Pedidos", new { }, new { @class = "btn btn-default" })</p>
+        <p>@Html.ActionLink("Por Zona »", "PorZona", "Pedidos", new { }, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h3>Historial de Pedidos</h3>
+        <p>Consulte el historial de cambios de un pedido.</p>
+        <p>@Html.ActionLink("Acceder »", "Historial", "Pedidos", new { }, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h3>Seguimiento</h3>
+        <p>Consulte los pedidos correspondientes a una zona específica.</p>
+        <p>@Html.ActionLink("Acceder »", "Index", "Seguimiento", new { }, new { @class = "btn btn-default" })</p>
+    </div>
+</div>
+
+<br />

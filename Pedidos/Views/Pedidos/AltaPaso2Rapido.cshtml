@@ -1,0 +1,144 @@
+﻿@model Pedidos.ViewModels.PedidosCreateStep2VM
+
+@{
+    ViewBag.Title = String.Format("Nuevo pedido para la gestión {0}", Model.GestionId);
+}
+
+<br />
+<h2>@ViewBag.Title</h2>
+<h4>Paso 2 de 2 / Carga de datos (modo rápido)</h4>
+
+@using (Html.BeginForm("AltaPaso3", "Pedidos")) 
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.GestionId);
+    @Html.HiddenFor(model => model.VolverA);
+    @Html.HiddenFor(model => model.ModoRapido);
+
+    <br />
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @for (var i = 0; i < Model.items.Count; i++)
+        {
+            @Html.HiddenFor(model => model.items[i].TipoDeArticulo);
+            @Html.HiddenFor(model => model.items[i].EstructuraSolicitada);
+            @Html.HiddenFor(model => model.items[i].Observaciones);
+            
+            <h4>Ítem @(i+1) (@Model.items[i].TipoDeArticulo)</h4>
+            <hr />
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.items[i].EstructuraSolicitada, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.items[i].EstructuraSolicitada, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.items[i].EstructuraSolicitada, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.items[i].Cantidad, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.items[i].Cantidad, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.items[i].Cantidad, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            
+            @Html.HiddenFor(model => model.items[i].FechaEntrega)
+            @Html.HiddenFor(model => model.items[i].Referencia)
+            
+            if (Model.items[i].TipoDeArticulo == "Tapa")
+            {
+                @Html.HiddenFor(model => model.items[i].TAP_Tipo)
+                @Html.HiddenFor(model => model.items[i].TAP_Medida)
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.items[i].TAP_LAM_MuestrarioId, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.items[i].TAP_LAM_MuestrarioId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.items[i].TAP_LAM_MuestrarioId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.items[i].TAP_LAM_Codigo, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.items[i].TAP_LAM_Codigo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.items[i].TAP_LAM_Codigo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                
+                @Html.HiddenFor(model => model.items[i].TAP_Melamina)
+                @Html.HiddenFor(model => model.items[i].TAP_BOR_Tipo)
+                @Html.HiddenFor(model => model.items[i].TAP_BOR_Espesor)
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.items[i].TAP_BOR_Color, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EnumDropDownListFor(model => model.items[i].TAP_BOR_Color, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.items[i].TAP_BOR_Color, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+            
+            if (Model.items[i].TipoDeArticulo == "Base")
+            {
+                @Html.HiddenFor(model => model.items[i].BAS_Modelo)
+                @Html.HiddenFor(model => model.items[i].BAS_Espesor)
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.items[i].BAS_Color, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EnumDropDownListFor(model => model.items[i].BAS_Color, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.items[i].BAS_Color, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                
+                @Html.HiddenFor(model => model.items[i].BAS_Proveedor)
+            }
+            
+            if (Model.items[i].TipoDeArticulo == "Vitrea")
+            {
+                @Html.HiddenFor(model => model.items[i].VIT_Tipo)
+                @Html.HiddenFor(model => model.items[i].VIT_Medida)
+                @Html.HiddenFor(model => model.items[i].VIT_Transparente)
+            }
+
+            if (Model.items[i].TipoDeArticulo == "FueraDeLista")
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.items[i].FUE_Titulo, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.items[i].FUE_Titulo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.items[i].FUE_Titulo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.items[i].FUE_Detalle, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(model => model.items[i].FUE_Detalle, new { cols = 64, rows = 16, @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.items[i].FUE_Detalle, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+            
+            @Html.HiddenFor(model => model.items[i].ART_Particularidades)
+        }
+
+        <div class="form-group">
+            <div class="col-md-offset-4 col-md-8">
+                <input type="submit" value="Confirmar" class="btn btn-success" />
+                <a href="@Model.VolverA" class="btn btn-default">Cancelar</a>
+            </div>
+        </div>
+    </div>
+}
+
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/CustomScripts/date-functions.js")
+    @Scripts.Render("~/Scripts/CustomScripts/date-validator.js")
+}

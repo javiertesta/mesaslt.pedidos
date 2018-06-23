@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Inicio";
+}
+
+<div class="jumbotron">
+    <h1>Sistema Administrativo</h1>
+    <p class="lead">Administre los distintos componentes de la empresa en la nube, desde el lugar donde se encuentre, en un entorno ágil y centralizado.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Clientes</h2>
+        <p>Liste, busque y administre los clientes de la empresa.</p>
+        <p>@Html.ActionLink("Acceda »", "Index", "Clientes", new { }, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Artículos</h2>
+        <p>Administre los artículos que están disponibles para la venta.</p>
+        <p>@Html.ActionLink("Acceda »", "Index", "Articulos", new { }, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Pedidos</h2>
+        <p>Administre los pedidos de un cliente creando gestiones para cada contacto (telefónico, mail, skype, personal, etc.), dando altas a los distintos ítems pedidos, y manteniendo el seguimiento en todo el circuito de producción.</p>
+        <p>@Html.ActionLink("Gestiones »", "Index", "Gestiones", new { }, new { @class = "btn btn-default" })</p>
+        <p>@Html.ActionLink("Pedidos »", "Index", "Pedidos", new { }, new { @class = "btn btn-default" })</p>
+        <p>@Html.RouteLink("Seguimiento »", "Seguimiento", new { }, new { @class = "btn btn-default" })</p>
+        <p>@Html.ActionLink("Informes »", "Index", "Informes", new { }, new { @class = "btn btn-default" })</p>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Gestiones";
+}
+
+<div class="jumbotron">
+    <h1>@ViewBag.Title</h1>
+    <p class="lead">Administre las gestiones que realizan los clientes de la empresa.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <p class="text-center">
+            Utilice el siguiente cuadro de texto para encontrar clientes que coincidan con los datos ingresados.<br />
+            El sistema buscará en toda la tabla de clientes y presentará un listado con las coincidencias.<br />
+            Deje el cuadro en blanco para listar todos los registros.<br />
+            <br />
+        </p>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                @using (Html.BeginForm("Todas", "Gestiones", FormMethod.Post, new { role = "form" }))
+                {
+                    <div class="row">
+                        <div class="col-md-7">
+                            @Html.TextBox("newSearch", "", new { @class = "form-control", placeholder = "Filtro" })
+                        </div>
+                        <div class="col-md-5">
+                            <input type="submit" value="Buscar" class="btn btn-primary pull-left" />
+                            @Html.ActionLink("Alta", "Alta", "Gestiones", new { }, new { @class = "btn btn-default pull-right" })
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+<br />
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Por Cliente</h2>
+        <p>Liste, busque y administre las gestiones de un cliente en especial.</p>
+        <p>@Html.ActionLink("Acceda »", "PorCliente", "Gestiones", new { }, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-6">
+        <h2>Historial</h2>
+        <p>Consulte cada una de las modificaciones que sufrió una gestión determinada a lo largo del tiempo.</p>
+        <p>@Html.ActionLink("Acceda »", "Historial", "Gestiones", new { }, new { @class = "btn btn-default" })</p>
+    </div>
+</div>
+<br />

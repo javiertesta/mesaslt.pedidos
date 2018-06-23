@@ -1,0 +1,164 @@
+﻿@using Pedidos.Models;
+@model Pedidos.Models.Articulo
+
+@{
+    ViewBag.Title = String.Format("Detalle del Artículo {0}", Model.ArticuloId.ToString());
+}
+
+<br />
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <h4>Datos</h4>
+    <hr />
+
+    <dl class="dl-horizontal">
+        
+        @if (Model is Tapa)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => (model as Tapa).TipoNombre)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Tapa).TipoNombre)
+            </dd>
+            
+            <dt>
+                @Html.DisplayNameFor(model => (model as Tapa).Medida)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Tapa).Medida)
+            </dd>
+            
+            <dt>
+                @Html.DisplayNameFor(model => (model as Tapa).Laminado_MuestrarioId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Tapa).Laminado_MuestrarioId)
+            </dd>
+            
+            <dt>
+                @Html.DisplayNameFor(model => (model as Tapa).Laminado_CodigoId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Tapa).Laminado_CodigoId)
+            </dd>
+            
+            <dt>
+                @Html.DisplayNameFor(model => (model as Tapa).Melamina)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Tapa).Melamina)
+            </dd>
+            
+            <dt>
+                @Html.DisplayNameFor(model => (model as Tapa).Borde.TipoNombre)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Tapa).Borde.TipoNombre)
+            </dd>
+            
+            <dt>
+                @Html.DisplayNameFor(model => (model as Tapa).Borde.EspesorNombre)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Tapa).Borde.EspesorNombre)
+            </dd>
+            
+            <dt>
+                @Html.DisplayNameFor(model => (model as Tapa).Borde.ColorNombre)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Tapa).Borde.ColorNombre)
+            </dd>
+        }
+        
+        @if (Model is Base)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => (model as Base).Modelo)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Base).Modelo)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => (model as Base).EspesorNombre)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Base).EspesorNombre)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => (model as Base).ColorNombre)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Base).ColorNombre)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => (model as Base).ProveedorNombre)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Base).ProveedorNombre)
+            </dd>
+
+        }
+        
+        @if (Model is Vitrea)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => (model as Vitrea).Tipo)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Vitrea).Tipo)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => (model as Vitrea).Medida)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Vitrea).Medida)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => (model as Vitrea).Transparente)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as Vitrea).Transparente)
+            </dd>
+
+        }
+
+        @if (Model is FueraDeLista)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => (model as FueraDeLista).Titulo)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as FueraDeLista).Titulo)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => (model as FueraDeLista).Detalle)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => (model as FueraDeLista).Detalle)
+            </dd>
+        }
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Particularidades)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Particularidades)
+        </dd>
+
+    </dl>
+</div>
+
+<br />
+
+<p>
+    <a href="@ViewBag.ReturnURL" class="btn btn-default">Volver al Listado</a>
+</p>

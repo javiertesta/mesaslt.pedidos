@@ -1,0 +1,73 @@
+﻿@model Pedidos.Models.ArchivoAdjuntoEnPedido
+
+@{
+    ViewBag.Title = "Baja de Archivo Adjunto";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>¿Estás seguro que querés dar de baja el siguiente archivo adjunto?</h3>
+<div>
+    <h4>Archivo Adjunto</h4>
+    <dl class="dl-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </dl>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArchivoEnDiscoId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArchivoEnDiscoId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaCreacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaCreacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreOriginal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreOriginal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PedidoId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PedidoId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tipo)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            @Html.HiddenFor(model => model.ArchivoEnDiscoId)
+            @Html.HiddenFor(model => model.FechaCreacion)
+            @Html.HiddenFor(model => model.NombreOriginal)
+            @Html.HiddenFor(model => model.PedidoId)
+            @Html.HiddenFor(model => model.Tipo)
+            <input type="submit" value="Confirmar" class="btn btn-default" /> | 
+            <a href="@ViewBag.VolverA">Volver</a>
+        </div>
+    }
+</div>

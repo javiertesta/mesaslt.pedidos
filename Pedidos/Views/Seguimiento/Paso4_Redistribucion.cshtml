@@ -1,0 +1,87 @@
+﻿@model Pedidos.ViewModels.Seguimiento.AplicaSeguimientosVM
+
+@{
+    ViewBag.Title = "Distribución de Cantidades";
+}
+
+<br />
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginRouteForm("Seguimiento_Paso5_AplicaCambios", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.NuevaEtapa)
+    
+    <br />
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </div>
+
+    <h4>Etapa de destino</h4>
+    <hr />
+    <p>Las cantidades seleccionadas en la pantalla anterior pasarán a la etapa <b>@Model.NuevaEtapa_Nombre</b></p>
+
+    <br />
+
+    <br />
+    <h4>Distribución</h4>
+    <table class="table">
+        <tr>
+            <th style="width:18%">Pedido</th>
+            <th style="width:18%">A traspasar</th>
+            <th style="width:18%">Etapa actual</th>
+            <th style="width:18%">Cantidad actual</th>
+            <th style="width:28%; text-align:right">Cantidad que pasará a <i>@Model.NuevaEtapa_Nombre</i></th>
+        </tr>
+
+        @for (var iPedido = 0; iPedido < Model.PedidosEtapa2.Count; iPedido++)
+        {
+            <tr>
+                <td style="vertical-align:middle">
+                    @Html.HiddenFor(m => m.PedidosEtapa2[iPedido].PedidoId)
+                    @Html.HiddenFor(m => m.PedidosEtapa2[iPedido].ClienteId)
+                    Pedido @Model.PedidosEtapa2[iPedido].PedidoId
+                </td>
+                <td>
+                    @Html.EditorFor(m => m.PedidosEtapa2[iPedido].Cantidad, new { htmlAttributes = new { style = "width:60px", @class = "form-control", @readonly = "true" } })
+                </td>
+                <td colspan="3" style="text-align:justify">
+                    @Html.HiddenFor(m => m.PedidosEtapa2[iPedido].Leyenda)
+                    @Model.PedidosEtapa2[iPedido].Leyenda
+                </td>
+            </tr>
+            for (var iSeguimientos = 0; iSeguimientos < Model.PedidosEtapa2[iPedido].Seguimientos.Count; iSeguimientos++)
+                {
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="vertical-align:middle; color: @(Model.PedidosEtapa2[iPedido].Seguimientos.Count() > 1 ? "red" : "black")">
+                            @Html.HiddenFor(m => m.PedidosEtapa2[iPedido].Seguimientos[iSeguimientos].SeguimientoIndividualId)
+                            @Html.HiddenFor(m => m.PedidosEtapa2[iPedido].Seguimientos[iSeguimientos].EtapaDelNegocioInternaId)
+                            @Model.PedidosEtapa2[iPedido].Seguimientos[iSeguimientos].EtapaDelNegocioInterna_Nombre
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.PedidosEtapa2[iPedido].Seguimientos[iSeguimientos].CantidadActual, new { htmlAttributes = new { style = "width:60px", @class = "form-control", @readonly = "true" } })
+                        </td>
+                        <td>
+                            @if (Model.PedidosEtapa2[iPedido].Seguimientos.Count() <= 1)
+                            {
+                                @Html.EditorFor(m => m.PedidosEtapa2[iPedido].Seguimientos[iSeguimientos].CantidadAfectada, new { htmlAttributes = new { style = "width:60px", @class = "form-control pull-right", @readonly = "true" } })
+                            }
+                            else
+                            {
+                                @Html.EditorFor(m => m.PedidosEtapa2[iPedido].Seguimientos[iSeguimientos].CantidadAfectada, new { htmlAttributes = new { style = "width:60px", @class = "form-control pull-right" } })
+                            }
+                        </td>
+                    </tr>
+                }
+        }
+    </table>
+
+    <div class="form-group">
+        <input type="submit" value="Confirmar" class="btn btn-warning" />
+        @Html.ActionLink("Cancelar", "Index", "Home", new { }, new { @class = "btn btn-default" })
+    </div>
+}
+
+<br />

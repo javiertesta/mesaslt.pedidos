@@ -1,0 +1,26 @@
+﻿@model Nullable<Boolean>
+
+@{
+    var _fieldName = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    var _fieldId = ViewData.TemplateInfo.GetFullHtmlFieldId("");
+    var _displayName = Html.DisplayNameForModel();
+
+    var list = new List<SelectListItem> {
+               new SelectListItem { Text = (string)ViewData["truevalue"], Value = "true", Selected = Model.HasValue && Model.Value },
+               new SelectListItem { Text = (string)ViewData["falsevalue"], Value = "false", Selected = Model.HasValue && !Model.Value }
+    };
+
+    if (ViewData.ModelMetadata.IsNullableValueType)
+    {
+        list.Insert(0, new SelectListItem { Text = (string)ViewData["nullvalue"], Value = String.Empty, Selected = !Model.HasValue });
+    }
+
+    <select id="@_fieldId" name="@_fieldName" class="form-control">
+        @foreach (var item in list)
+        {
+            <option value="@item.Value" @(item.Selected ? " selected" : "")>@item.Text</option>
+        }
+    </select>
+}
+
+

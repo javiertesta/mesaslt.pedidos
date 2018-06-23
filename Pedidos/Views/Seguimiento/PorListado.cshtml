@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Titulo = "Seguimiento de listado";
+    ViewBag.TextoExplicativo = "Seleccione la fecha y la hora exacta del listado sobre el cual se trabajarán los seguimientos.";
+    SelectList _lista = ViewBag.ListaDeListadosPDF;
+}
+
+<div class="jumbotron">
+    <h1>@ViewBag.Titulo</h1>
+    <p class="lead">@ViewBag.TextoExplicativo</p>
+</div>
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8" style="text-align:center">
+        @using (Html.BeginRouteForm("SeguimientoPorListado", FormMethod.Post, new { @class = "form-inline" }))
+        {
+            @Html.Label("Listado", htmlAttributes: new { @class = "control-label" })@Html.Raw("&nbsp;")
+            @Html.DropDownList("id", _lista, new { @class = "form-control" })
+            <input type="submit" value="Continuar" class="btn btn-success" />
+            @Html.ActionLink("Cancelar", "Index", "Home", new { }, new { @class = "btn btn-default" })
+
+            <div class="form-horizontal">
+                @Html.ValidationMessage("id", new { @class = "text-danger" })
+            </div>
+        }
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/CustomScripts/date-functions.js")
+    @Scripts.Render("~/Scripts/CustomScripts/date-validator.js")
+}

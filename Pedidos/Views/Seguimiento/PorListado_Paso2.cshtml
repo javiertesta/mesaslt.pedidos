@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Titulo = "Informe del Listado";
+    List<string> _errores = ViewBag.DetallesDetectados;
+    int _id = ViewBag.Id;
+}
+
+<br />
+<h2>@ViewBag.Titulo</h2>
+
+@using (Html.BeginRouteForm("SeguimientoPorListado_Paso3_Cantidades", FormMethod.Post, new { @class = "form-inline" }))
+{
+    <div class="form-horizontal">
+        @Html.Hidden("id", _id)
+
+        <br />
+        <h4>Detalle</h4>
+        <hr />
+        <ul class="list-group">
+            @foreach (var error in _errores)
+            {
+                <li class="list-group-item">@error</li>
+            }
+        </ul>
+
+        <input type="submit" value="Continuar" class="btn btn-warning" />
+        @Html.ActionLink("Cancelar", "Index", "Home", new { }, new { @class = "btn btn-default" })
+
+    </div>
+}
+
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/CustomScripts/date-functions.js")
+    @Scripts.Render("~/Scripts/CustomScripts/date-validator.js")
+}

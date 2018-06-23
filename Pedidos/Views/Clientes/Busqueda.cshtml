@@ -1,0 +1,71 @@
+﻿@model PagedList.IPagedList<Pedidos.ViewModels.ClientesIndexVM>
+@using CustomExtensions
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Gestión de Clientes";
+}
+
+<br />
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @using (Html.BeginForm("Busqueda", "Clientes", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="form-group">
+            @Html.TextBox("newSearch", Request.QueryString.Get("search"), new { @class = "form-control", placeholder = "Texto a buscar." })
+            <input type="submit" value="Buscar" class="btn btn-default" />
+            @Html.ActionLink("Alta", "Create", new { }, new { @class = "btn btn-primary" })
+        </div>
+     }
+</p>
+
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLinkwParams(HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.FirstOrDefault().ClienteId).ToString()), "Index", new { sort = ViewBag.linkCodigo })
+        </th>
+        <th>
+            @Html.ActionLinkwParams(HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.FirstOrDefault().ZonaNombre).ToString()), "Index", new { sort = ViewBag.linkZona })
+        </th>
+        <th>
+            @Html.ActionLinkwParams(HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.FirstOrDefault().RazonSocial).ToString()), "Index", new { sort = ViewBag.linkRazonSocial })
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClienteId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ZonaNombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RazonSocial)
+        </td>
+        <td>
+            <div class="pull-right">
+                <div class="btn-group">
+                    @Html.ActionLink("Gestiones", "PorCliente", "Gestiones", new { id = item.ClienteId }, new { @class = "btn btn-default btn-xs" })
+                    @Html.ActionLink("Pedidos", "PorCliente", "Pedidos", new { clienteId = item.ClienteId }, new { @class = "btn btn-default btn-xs" })
+                </div>
+                <div class="btn-group">
+                    @Html.ActionLink("Editar", "Edit", new { id = item.ClienteId }, new { @class = "btn btn-default btn-xs" })
+                    @Html.ActionLink("Borrar", "Delete", new { id = item.ClienteId }, new { @class = "btn btn-default btn-xs" })
+                </div>
+            </div>
+        </td>
+    </tr>
+}
+</table>
+
+<div class="text-center text-info">
+    - - Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount - -
+</div>
+
+@Html.PagedListPager(Model, page => Url.Action("Index", "Clientes",
+Request.QueryString.toRouteValueDictionary().Merge(new RouteValueDictionary(new { @page = page }))))

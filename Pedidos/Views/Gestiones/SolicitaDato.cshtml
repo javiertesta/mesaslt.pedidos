@@ -1,0 +1,55 @@
+﻿@model Pedidos.ViewModels.Gestiones.SolicitaDatoVM
+
+@{
+    ViewBag.Title = Model.Titulo;
+}
+
+<div class="jumbotron">
+    <h1>@Model.Jumbotron.Titulo</h1>
+    <p class="lead">@Model.Jumbotron.Descripción</p>
+</div>
+
+<br />
+
+@using (Html.BeginForm(Model.Accion, Model.Controlador, FormMethod.Get, new { role = "form" }))
+{
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <input type="text" name="@Model.CuadroDeTexto.Nombre" value="@Model.Id" class = "form-control" placeholder = "@Model.CuadroDeTexto.Placeholder" />
+                        </div>
+                        <div class="col-md-5">
+                            <input type="submit" name="accion" value="@Model.BotonPrimario.Etiqueta" class="btn btn-primary pull-left" />
+                            <input type="hidden" name="volverA" value="@Model.Origen" />
+                            @if (!Model.BotonAlta.Disabled)
+                            {
+                                <a href="@Url.Action("Alta")" class="btn btn-default pull-right">Alta</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <br />
+                    @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+}
+
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/CustomScripts/date-functions.js")
+    @Scripts.Render("~/Scripts/CustomScripts/date-validator.js")
+}

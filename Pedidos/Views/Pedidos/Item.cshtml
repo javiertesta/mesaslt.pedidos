@@ -1,0 +1,103 @@
+﻿@model Tuple<string[], Dictionary<string, object>>
+
+@{
+    iTextSharp.text.BaseColor colorDelTipo = (iTextSharp.text.BaseColor)Model.Item2["ColorDelTipo"];
+    string colorDelTipoHexa = String.Format("rgb({0},{1},{2})", colorDelTipo.R, colorDelTipo.G, colorDelTipo.B);
+    bool dadoDeBaja = (bool)Model.Item2["DadoDeBaja"];
+    string estado = dadoDeBaja ? "rgb(255,0,0)" : "rgb(84,130,53)";
+    int contador = (int)Model.Item2["Contador"];
+    int pedidoId = (int)Model.Item2["PedidoId"];
+}
+
+<table style="width: 100%; border-collapse: collapse">
+
+    <!-- Fila 01 -->
+    <tr>
+        <td style="width:  2%; height: 1px"><img src="@Request.MapPath("~\\content\\pixel.png")" width="16" height="1" /></td>
+        <td style="width:  2%; height: 1px"><img src="@Request.MapPath("~\\content\\pixel.png")" width="16" height="1" /></td>
+        <td style="width: 12%; height: 1px"><img src="@Request.MapPath("~\\content\\pixel.png")" width="96" height="1" /></td>
+        <td style="width: 14%; height: 1px"><img src="@Request.MapPath("~\\content\\pixel.png")" width="112" height="1" /></td>
+        <td style="width: 14%; height: 1px"><img src="@Request.MapPath("~\\content\\pixel.png")" width="112" height="1" /></td>
+        <td style="width: 14%; height: 1px"><img src="@Request.MapPath("~\\content\\pixel.png")" width="112" height="1" /></td>
+        <td style="width: 14%; height: 1px"><img src="@Request.MapPath("~\\content\\pixel.png")" width="112" height="1" /></td>
+        <td style="width: 14%; height: 1px"><img src="@Request.MapPath("~\\content\\pixel.png")" width="112" height="1" /></td>
+        <td style="width: 14%; height: 1px"><img src="@Request.MapPath("~\\content\\pixel.png")" width="112" height="1" /></td>
+    </tr>
+
+    <!-- Fila 02 -->
+    <tr style="min-height: 20px">
+        <td class="text-center tipodearticulo" style="width: 4%; border-style: solid; border-width: 3px 0px 3px 3px; border-radius: 25px 0px 0px 25px; background-color: @colorDelTipoHexa" colspan="2" rowspan="2">@Model.Item1[0]</td>
+        <!-- <td style="width: 2%"></td> -->
+        <td class="text-center contenido" style="width: 12%; border-style: solid; border-width: 3px 3px 0px 0px; background-color: @colorDelTipoHexa" rowspan="2">@Model.Item1[1]</td>
+        <td class="contenidodestacado" style="width: 56%; border-style: solid; border-width: 1px 0px 0px 3px" colspan="4">@Model.Item1[2]</td>
+        <!-- <td style="width: 14%"></td> -->
+        <!-- <td style="width: 14%"></td> -->
+        <!-- <td style="width: 14%"></td> -->
+        <td class="contenidodestacado" style="width: 28%; border-style: solid; border-width: 1px 1px 0px 0px; text-align: right" colspan="2">@Model.Item1[3]</td>
+        <!-- <td style="width: 14%"></td> -->
+    </tr>
+
+    <!-- Fila 03 -->
+    <tr style="min-height: 20px">
+        <!-- <td style="width: 2%"></td> -->
+        <!-- <td style="width: 2%"></td> -->
+        <!-- <td style="width: 12%"></td> -->
+        <td class="contenidodestacado" style="width: 42%; border-style: solid; border-width: 0px 0px 0px 3px" colspan="3">@Model.Item1[4]</td>
+        <!-- <td style="width: 14%"></td> -->
+        <!-- <td style="width: 14%"></td> -->
+        <td class="contenidodestacado" style="width: 42%; border-style: solid; border-width: 0px 1px 0px 0px; text-align: right" colspan="3">@Model.Item1[5]</td>
+        <!-- <td style="width: 14%"></td> -->
+        <!-- <td style="width: 14%"></td> -->
+    </tr>
+
+    <!-- Fila 04 -->
+    <tr style="min-height: 20px">
+        <td class="text-center contenido" style="width: 4%; vertical-align: bottom; border-style: solid; border-width: 3px 3px 0px 0px" colspan="2" rowspan="3">
+            @Html.Hidden(string.Format("pedidoId[{0}]", contador), pedidoId)
+            @Html.CheckBox(string.Format("seleccionado[{0}]", contador), false)
+        </td>
+        <!-- <td style="width: 2%"></td> -->
+        <td class="text-center contenido" style="width: 12%; border-style: solid; border-width: 0px 3px 0px 3px; background-color: @colorDelTipoHexa">@Model.Item1[6]</td>
+        <td class="text-center contenido" style="width: 84%; border-style: solid; border-width: 0px 1px 0px 3px; background-color: rgb(189,215,238)" colspan="6">@Model.Item1[7]</td>
+        <!-- <td style="width: 14%"></td> -->
+        <!-- <td style="width: 14%"></td> -->
+        <!-- <td style="width: 14%"></td> -->
+        <!-- <td style="width: 14%"></td> -->
+        <!-- <td style="width: 14%"></td> -->
+    </tr>
+
+    <!-- Fila 05 -->
+    <tr style="min-height: 20px">
+        <!-- <td style="width="2%"></td> -->
+        <!-- <td style="width: 2%"></td> -->
+        <td class="text-center contenido" style="width: 12%; border-style: solid; border-width: 0px 3px 3px 3px; background-color: @colorDelTipoHexa" rowspan="2">@Model.Item1[8]</td>
+        <td class="contenido" style="width: 28%; border-style: solid; border-width: 0px 0px 0px 3px" colspan="2">@Model.Item1[9]</td>
+        <!-- <td style="width: 14%"></td> -->
+        <td class="contenido" style="width: 14%; border-style: solid; border-width: 0px 0px 0px 0px">@Model.Item1[10]</td>
+        <td class="contenido" style="width: 14%; border-style: solid; border-width: 0px 0px 0px 0px">@Model.Item1[11]</td>
+        <td class="contenido" style="width: 28%; border-style: solid; border-width: 0px 1px 0px 0px; text-align: right; color: @estado" colspan="2">@Model.Item1[12]</td>
+        <!-- <td style="width: 14%"></td> -->
+    </tr>
+
+    <!-- Fila 06 -->
+    <tr style="min-height: 20px">
+        <!-- <td style="width: 2%"></td> -->
+        <!-- <td style="width: 2%"></td> -->
+        <!-- <td style="width: 12%"></td> -->
+        <td class="contenido" style="width: 42%; border-style: solid; border-width: 0px 0px 1px 3px" colspan="3">@Model.Item1[13]</td>
+        <!-- <td style="width: 14%"></td> -->
+        <!-- <td style="width: 14%"></td> -->
+        <td class="contenido" style="width: 28%; border-style: solid; border-width: 0px 0px 1px 0px" colspan="2">@Model.Item1[14]</td>
+        <!-- <td style="width: 14%"></td> -->
+        <td class="contenido" style="width: 14%; border-style: solid; border-width: 0px 1px 1px 0px; text-align: right">@Model.Item1[15]</td>
+    </tr>
+
+    <!-- Fila 07 -->
+    <tr>
+        <td style="width: 100%" colspan="9">
+            @Html.ActionLink("Historial", "Historial", "Pedidos", new { id = pedidoId }, new { @class = "btn btn-default btn-xs pull-right" })
+            @Html.ActionLink("Detalle", "Detalle", "Pedidos", new { id = pedidoId, VolverA = Request.RawUrl }, new { @class = "btn btn-default btn-xs pull-right" })
+        </td>
+    </tr>
+
+</table>

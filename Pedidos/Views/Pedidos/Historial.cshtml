@@ -1,0 +1,61 @@
+﻿@model Pedidos.ViewModels.PedidosHistorialVM
+@using CustomExtensions;
+@using System.Web.Mvc.Html;
+@using PagedList.Mvc;
+
+@{
+    Tuple<string[], Dictionary<string, object>> pedidoPreparado;
+    var funciones = new Pedidos.Controllers.Informes.LectorDePedidosActivos();
+}
+
+<br />
+<h2>@Model.Titulo</h2>
+
+<br />
+@using (Html.BeginForm("SeleccionaAccion", "Pedidos"))
+{
+    @Html.AntiForgeryToken()
+
+    <style type="text/css">
+        .tipodearticulo
+        {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 32px;
+            vertical-align: middle;
+        }
+        .contenido
+        {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        .contenidodestacado
+        {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 18px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+    </style>
+
+    foreach (var item in Model.Orden)
+    {
+        switch (item.Item2)
+        {
+            case "pedido":
+                pedidoPreparado = funciones.LeePedido(Model.Pedidos.Where(p => p.PedidoId == item.Item3).FirstOrDefault());
+                pedidoPreparado.Item2.Add("Contador", 0);
+                pedidoPreparado.Item2.Add("PedidoId", Model.Pedidos.Where(p => p.PedidoId == item.Item3).FirstOrDefault().PedidoId);
+                Html.RenderPartial("Item", pedidoPreparado);
+                break;
+
+            case "seguimiento":
+                Tuple<Pedidos.DAL.CambioDeSeguimiento, Pedidos.DAL.CambioDeSeguimiento> model = new Tuple<Pedidos.DAL.CambioDeSeguimiento, Pedidos.DAL.CambioDeSeguimiento>(Model.VariacionesDeSeguimientos.First().Value[item.Item3], Model.SeguimientosCompletos.First().Value[item.Item3]);
+                Html.RenderPartial("Seguimiento", model);
+                break;
+        }
+    }
+
+    <br />
+    <br />
+}

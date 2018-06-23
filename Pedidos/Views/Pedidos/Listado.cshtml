@@ -1,0 +1,76 @@
+﻿@model Pedidos.ViewModels.PedidosIndexVM
+@using CustomExtensions;
+@using System.Web.Mvc.Html;
+@using Pedidos.Models;
+@using PagedList.Mvc;
+
+@{
+    var counter = 0;
+    Tuple<string[], Dictionary<string, object>> pedidoPreparado;
+    var funciones = new Pedidos.Controllers.Informes.LectorDePedidosActivos();
+}
+
+<br />
+<h2>@Model.Titulo</h2>
+
+@using (Html.BeginForm(Model.Action, Model.Controller, FormMethod.Post, new { @class = "form-inline" }))
+{
+    <p>
+        @Html.TextBox("nuevaBusqueda", Request.QueryString.Get("buscar"), new { placeholder = "Texto a buscar.", @class = "form-control" }) en @Html.DropDownList("buscarEn", Model.SearchInList, new { @class = "form-control" })
+        <input type="submit" name="comando" value="Buscar" class="btn btn-default" />
+        <input type="hidden" name="queryString" value="@Request.QueryString" />
+        @Html.ActionLinkwParams("Nuevo Pedido", "AltaPaso1", "Pedidos", new { gestionId = (Model.Action == "PorGestion") ? Model.Parametro : "", volverA = Model.VolverA }, new { @class = "btn btn-primary" })
+    </p>
+}
+
+<br />
+@using (Html.BeginForm("SeleccionaAccion", "Pedidos", new { volverA = Model.VolverA }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.VolverA)
+
+    <style type="text/css">
+        .tipodearticulo
+        {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 32px;
+            vertical-align: middle;
+        }
+        .contenido
+        {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        .contenidodestacado
+        {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 18px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+    </style>
+    
+    foreach (var item in Model.Pedidos)
+    {
+        pedidoPreparado = funciones.LeePedido(item);
+        pedidoPreparado.Item2.Add("Contador", counter);
+        pedidoPreparado.Item2.Add("PedidoId", item.PedidoId);
+        Html.RenderPartial("Item", pedidoPreparado);
+        counter++;
+    }
+
+    <input type="submit" name="comando" value="Editar Seleccionados" class="btn btn-default" />
+    <input type="submit" name="comando" value="Borrar Seleccionados" class="btn btn-default" />
+
+    <br />
+    <br />
+
+}
+
+<div class="text-center text-info">
+    - - Página @(Model.Pedidos.PageCount < Model.Pedidos.PageNumber ? 0 : Model.Pedidos.PageNumber) de @Model.Pedidos.PageCount - -
+</div>
+
+@Html.PagedListPager(Model.Pedidos, pagina => Url.Action(Model.Action, Model.Controller,
+Request.QueryString.toRouteValueDictionary().Merge(new RouteValueDictionary(new { @pagina = pagina }))))

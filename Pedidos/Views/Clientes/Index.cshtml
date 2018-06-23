@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Clientes";
+}
+
+<div class="jumbotron">
+    <h1>@ViewBag.Title</h1>
+    <p class="lead">Administre los clientes que posee la empresa.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+        <p class="text-center">
+            Utilice el siguiente cuadro de texto para encontrar clientes que coincidan con los datos ingresados.<br />
+            El sistema buscará en toda la tabla de clientes y presentará un listado con las coincidencias.<br />
+            Deje el cuadro en blanco para listar todos los registros.<br />
+            <br />
+        </p>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                @using (Html.BeginForm("Busqueda", "Clientes", FormMethod.Post, new { role = "form" }))
+                {
+                    <div class="row">
+                        <div class="col-md-7">
+                            @Html.TextBox("newSearch", "", new { @class = "form-control", placeholder = "Filtro" })
+                        </div>
+                        <div class="col-md-5">
+                            <input type="submit" value="Buscar" class="btn btn-primary pull-left" />
+                            @Html.ActionLink("Alta", "Create", "Clientes", new { }, new { @class = "btn btn-default pull-right" })
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+    <div c  lass="col-md-2">
+    </div>
+</div>
+<br />

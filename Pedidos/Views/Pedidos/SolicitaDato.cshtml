@@ -1,0 +1,66 @@
+﻿@model Pedidos.ViewModels.PedidosVM.SolicitaDatoVM
+
+@{
+    ViewBag.Title = Model.Titulo;
+}
+
+<div class="jumbotron">
+    <h1>@Model.Jumbotron.Titulo</h1>
+    <p class="lead">@Model.Jumbotron.Descripción</p>
+</div>
+
+<br />
+
+@using (Html.BeginForm(Model.Formulario.Accion, Model.Formulario.Controlador, Model.Formulario.Metodo, new { role = "form-inline" }))
+{
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-7">
+                            @switch (Model.Formulario.Accion)
+                            {
+                                case "PorCliente":
+                                    <input type="text" name="@Model.ControlPrincipal.Nombre" value="@Model.clienteId" class="form-control" placeholder="@Model.ControlPrincipal.Placeholder" />
+                                    break;
+                                case "PorGestion":
+                                    <input type="text" name="@Model.ControlPrincipal.Nombre" value="@Model.gestionId" class="form-control" placeholder="@Model.ControlPrincipal.Placeholder" />
+                                    break;
+                                case "Historial":
+                                    <input type="text" name="@Model.ControlPrincipal.Nombre" value="@Model.id" class="form-control" placeholder="@Model.ControlPrincipal.Placeholder" />
+                                    break;
+                                case "PorZona":
+                                    @Html.EnumDropDownListFor(model => model.zonaId, new { @class = "form-control" })
+                                    break;
+                                default:
+                                    break;
+                            }
+                        </div>
+                        <div class="col-md-5">
+                            <input type="submit" value="@Model.Formulario.BotonDeEnvio.Etiqueta" class="btn btn-primary pull-left" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <br />
+                    @Html.ValidationMessageFor(model => model.ControlPrincipal, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+}
+
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/CustomScripts/date-functions.js")
+    @Scripts.Render("~/Scripts/CustomScripts/date-validator.js")
+}

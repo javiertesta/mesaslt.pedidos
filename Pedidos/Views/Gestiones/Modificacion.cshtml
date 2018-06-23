@@ -1,0 +1,53 @@
+﻿@model Pedidos.ViewModels.GestionesModificacionVM
+
+@{
+    ViewBag.Title = String.Format("Modificación de la gestión {0}", Model.GestionId);
+}
+
+<br />
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <br />
+        <h4>Detalle</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.GestionId)
+        @Html.HiddenFor(model => model.RowVersion)
+        @Html.HiddenFor(model => model.VolverA)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaGestion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FechaGestion)
+                @Html.ValidationMessageFor(model => model.FechaGestion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Observaciones, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Observaciones, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Observaciones, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar Cambios" class="btn btn-warning" />
+                <a href="@Model.VolverA" class="btn btn-default">Cancelar</a>
+            </div>
+        </div>
+    </div>
+}
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/CustomScripts/date-functions.js")
+    @Scripts.Render("~/Scripts/CustomScripts/date-validator.js")
+}

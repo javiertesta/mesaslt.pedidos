@@ -1,0 +1,52 @@
+﻿@model Pedidos.ViewModels.InformesSeleccionaZonaVM
+
+@{
+    ViewBag.Title = "Informe de pedidos por zona";
+}
+
+<div class="jumbotron">
+    <h1>@ViewBag.Title</h1>
+    <p class="lead">Ingrese la zona de la cual se listarán sus pedidos.</p>
+</div>
+
+<br />
+
+@using (Html.BeginForm("Zona", "Informes", FormMethod.Get, new { @class = "form-inline" }))
+{
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            @Html.EnumDropDownListFor(model => model.id, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-6">
+                            <input type="submit" value="Continuar" class="btn btn-success" />
+                            <a href="#" class="btn btn-default">Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <br />
+                    @Html.ValidationMessageFor(model => model.id, "", new { @class = "text-danger" })
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+}
+
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/CustomScripts/date-functions.js")
+    @Scripts.Render("~/Scripts/CustomScripts/date-validator.js")
+}

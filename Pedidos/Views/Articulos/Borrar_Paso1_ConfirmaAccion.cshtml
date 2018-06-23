@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Confirmar Eliminación";
+    int?[] items = ViewBag.Articulos;
+}
+
+<br />
+<h2>@ViewBag.Title</h2>
+<h4>Se eliminarán los siguientes artículos.</h4>
+
+<div>
+
+    <br />
+    <h4>Detalle</h4>
+    
+    <dl class="dl-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </dl>
+    
+    @using (Html.BeginForm("Borrar_Paso2_EjecutaAcciones", "Articulos", FormMethod.Post, new { @class = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("VolverA", (string)(ViewBag.ReturnURL))
+        for (var i = 0; i < items.Count(); i++) { Html.Hidden(String.Format("Articulos[{0}]", i), items[i]); }
+
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <ul class="list-group">
+                    @for (var i = 0; i < items.Count(); i++)
+                    {
+                        <li class="list-group-item">@ViewBag.Articulos[i]</li>
+                    }
+                </ul>
+            </div>
+            <div class="col-md-8"></div>
+        </div>
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Confirmar" class="btn btn-danger" />
+            <a href="@ViewBag.ReturnURL" class="btn btn-default">Cancelar</a>
+        </div>
+    }
+
+</div>
+
+<br />
