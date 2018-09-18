@@ -831,6 +831,7 @@ namespace Pedidos.Controllers
         /// <param name="comando">Especifica la acción solicitada a aplicarse sobre los ítems seleccionados.</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Webmaster,Gerencia")]
         public async Task<ActionResult> SeleccionaAccion(int[] pedidoId, bool[] seleccionado, string volverA, string comando)
         {
 
@@ -874,6 +875,7 @@ namespace Pedidos.Controllers
         /// </summary>
         /// <param name="contactoid">Id de la gestión a la que se asociará el pedido.</param>
         /// <param name="returnto">URL que se usará al finalizar para saber desde dónde partió el proceso.</param>
+        [Authorize(Roles = "Webmaster,Gerencia")]
         public ActionResult AltaPaso1(int? gestionId, string volverA)
         {
             
@@ -1067,6 +1069,7 @@ namespace Pedidos.Controllers
         /// <param name="volverA">URL que contiene la pantalla desde donde se partió.</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Webmaster,Gerencia")]
         public async Task<ActionResult> AltaPaso3(PedidosCreateStep2VM VM2in, int? gestionId, string volverA)
         {
 
@@ -1145,6 +1148,7 @@ namespace Pedidos.Controllers
         /// <param name="volverA">URL que se usará para cancelar el proceso y regresar a la pantalla inicial, o al finalizar.</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Webmaster,Gerencia")]
         public ActionResult BajaPaso1(int[] pedidos, string volverA)
         {
 
@@ -1165,6 +1169,7 @@ namespace Pedidos.Controllers
         /// <param name="volverA">URL que se usará para cancelar el proceso y regresar a la pantalla inicial, o al finalizar.</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Webmaster,Gerencia")]
         public async Task<ActionResult> BajaPaso2(int[] pedidos, string volverA)
         {
 
@@ -1198,6 +1203,7 @@ namespace Pedidos.Controllers
         /// <param name="volverA">URL que se usará para cancelar el proceso y regresar a la pantalla inicial, o al finalizar.</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Webmaster,Gerencia")]
         public async Task<ActionResult> ModificacionPaso1(int[] pedidos, string volverA)
         {
 
@@ -1219,6 +1225,7 @@ namespace Pedidos.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Webmaster,Gerencia")]
         public async Task<ActionResult> ModificacionPaso2()
         {
 
