@@ -86,7 +86,7 @@
                         @adjunto.NombreOriginal
                     </dt>
                     <dd>
-                        <a href="@adjunto.URL">Ver</a><br />
+                        @Html.ActionLink("Bajar", "Bajar", "Adjuntos", new { id = adjunto.ArchivoEnDiscoId }, new { })<br />
                         @adjunto.FechaCreacion.ToString("dd/MM/yyyy hh:mm")<br />
                         @adjunto.Tipo<br />
                     </dd>

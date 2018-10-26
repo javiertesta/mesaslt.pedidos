@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Pedidos.Models;
+using Pedidos.ViewModels;
+using System;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Pedidos.ViewModels;
-using Pedidos.Models;
-using System.IO;
-using System.Threading.Tasks;
-using System.Net;
-using Pedidos.DAL;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
 
 namespace Pedidos.Controllers
 {
-    
+
     public class AdjuntosController : UOWController
     {
 
@@ -172,6 +168,12 @@ namespace Pedidos.Controllers
             ModelState.AddModelError(String.Empty, "Ocurrió un error en el pasaje entre pantallas. Intentá nuevamente en unos segundos o reintentá la operación desde cero.");
             return View("Baja", model);
 
+        }
+
+        public FileStreamResult Bajar(int id)
+        {
+            var archivoEnDisco = this.UOW.ArchivoEnDiscoRepository.ObtenerPorId(id);
+            return new FileStreamResult(System.IO.File.OpenRead(archivoEnDisco.Ubicacion + "\\" + archivoEnDisco.Nombre), archivoEnDisco.Tipo);
         }
 
     }
