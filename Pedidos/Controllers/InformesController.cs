@@ -388,6 +388,103 @@ namespace Pedidos.Controllers
 
         }
 
+        [ActionName("mdf")]
+        public ActionResult MDF()
+        {
+
+            Informes.InformeEnTabla informe = new Informes.InformeEnTabla(PageSize.LEGAL.Rotate(), 36, 36, 18, 36);
+            List<string> contenido;
+            informe.Titulo = "Listado para Cabina";
+            informe.Creador = "Sistema de Pedidos";
+            informe.PalabrasClaves = "PDF informe listado pedidos cabina MDF lustre mesas lt";
+            informe.Asunto = "Informe";
+            informe.Fecha = DateTime.Now;
+
+            // Abre el documento para permitir la escritura.
+            informe.Open();
+
+            // Crea la tabla que contendrá los datos presentados.
+            List<Informes.Columna> columnas = new List<Informes.Columna>();
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 10, Contenido = "CANT" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 25, Contenido = "Descripción" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 15, Contenido = "Color" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 10, Contenido = "BDE Tip" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 10, Contenido = "BDE Esp" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 10, Contenido = "BDE Col" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_RIGHT, AnchoRelativo = 10, Contenido = "CLI" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_RIGHT, AnchoRelativo = 10, Contenido = "PED" });
+            informe.CrearTabla(columnas);
+
+            // Obtiene los datos desde la base.
+            List<Pedido> pedidos = UOW.PedidoRepository.InformePedidosCabina();
+
+            // Crea una celda que contiene un mensaje de "Listado Vacío".
+            PdfPCell listadoVacio = informe.CeldaDatos("Listado Vacío");
+            listadoVacio.Colspan = informe.Tabla.NumberOfColumns;
+
+            // Si no hay ninguna tapa para mostrar,
+            if (pedidos.FirstOrDefault() == null)
+            {
+                informe.Tabla.AddCell(listadoVacio);
+            }
+
+            // Si hay tapas para mostrar,
+            else
+            {
+
+                // Registra el listado para que posteriormente se pueda recuperar y analizar.
+                UOW.PedidosListadosRepository.Insert(new PedidoListado()
+                {
+                    Fecha = informe.Fecha,
+                    Creador = informe.Creador,
+                    Titulo = informe.Titulo,
+                    Pedidos = String.Join(",", pedidos.Select(p => p.PedidoId).ToArray())
+                });
+                UOW.SaveChanges();
+
+                // Procede a listar las tapas para corte.
+                Tapa tapa;
+                PdfPCell celda;
+                foreach (var pedido in pedidos)
+                {
+
+                    tapa = pedido.Articulo as Tapa;
+                    contenido = new List<string>();
+                    contenido.Add(pedido.SeguimientoGlobal.ConjuntoAtrasado.Cantidad.ToString());
+                    contenido.Add(tapa.ToString("Controllers.InformesController.CorteDeLaminado"));
+                    contenido.Add(tapa.Laminado_CodigoId);
+                    contenido.Add(tapa.Borde.TipoNombre);
+                    contenido.Add(tapa.Borde.EspesorNombre);
+                    contenido.Add(tapa.Borde.ColorNombre);
+                    contenido.Add(pedido.Gestion.ClienteId);
+                    contenido.Add(pedido.PedidoId.ToString());
+                    informe.AgregarFila(contenido);
+
+                    if (!String.IsNullOrWhiteSpace(pedido.Articulo.Particularidades) || !String.IsNullOrWhiteSpace(pedido.Observaciones))
+                    {
+                        celda = informe.CeldaDatos(pedido.FechaEntrega.HasValue ? String.Format("PARA EL {0}", pedido.FechaEntrega.Value.ToString("dd/MM")) : String.Format("Pedido el {0}", pedido.Gestion.FechaGestion.ToString("dd/MM")));
+                        celda.HorizontalAlignment = Element.ALIGN_LEFT;
+                        informe.Tabla.AddCell(celda);
+
+                        List<string> textos = new List<string>() { tapa.Particularidades, pedido.Observaciones };
+                        celda = informe.CeldaDatos(String.Format("OBS Pedido {0} -> {1}", pedido.PedidoId.ToString(), String.Join(" / ",textos.ToArray())));
+                        celda.HorizontalAlignment = Element.ALIGN_RIGHT;
+                        celda.Colspan = columnas.Count - 1;
+                        informe.Tabla.AddCell(celda);
+                    }
+
+                }
+
+            }
+
+            // Agrega la tabla al documento y finaliza, cerrando los objetos requeridos.
+            informe.Close();
+
+            // Vuelca el contenido del stream en el explorador.
+            return informe.SendFileResult();
+
+        }
+
         public ActionResult Zona(Pedidos.Models.Enums.Zonas? id)
         {
 

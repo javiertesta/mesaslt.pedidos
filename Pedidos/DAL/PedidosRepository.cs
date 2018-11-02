@@ -352,6 +352,22 @@ namespace Pedidos.DAL
 
         }
 
+        public List<Pedido> InformePedidosCabina()
+        {
+
+            var UOW = new UnitOfWork(context);
+
+            var entidades = this.PlantillaBase
+                .Where(p => (p.Articulo as Tapa) != null)
+                .Where(p => (p.Articulo as Tapa).Borde.Tipo == TiposDeBordesDeTapas.BordeMDF || (p.Articulo as Tapa).Borde.Tipo == TiposDeBordesDeTapas.BordeMDFINV)
+                //.ToList()
+                .OrderByDescending(p => p.FechaEntrega)
+                .ThenByDescending(p => p.Gestion.FechaGestion)
+                .ToList();
+            return entidades;
+
+        }
+
         public List<Pedido> InformePedidosActivosPorZona(Pedidos.Models.Enums.Zonas id)
         {
 
