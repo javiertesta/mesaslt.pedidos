@@ -405,14 +405,14 @@ namespace Pedidos.Controllers
 
             // Crea la tabla que contendrá los datos presentados.
             List<Informes.Columna> columnas = new List<Informes.Columna>();
-            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 10, Contenido = "CANT" });
-            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 25, Contenido = "Descripción" });
-            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 15, Contenido = "Color" });
-            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 10, Contenido = "BDE Tip" });
-            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 10, Contenido = "BDE Esp" });
-            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 10, Contenido = "BDE Col" });
-            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_RIGHT, AnchoRelativo = 10, Contenido = "CLI" });
-            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_RIGHT, AnchoRelativo = 10, Contenido = "PED" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 10, Contenido = "Cantidad" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 30, Contenido = "Descripción" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 10, Contenido = "Color" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 10, Contenido = "BDE Tipo" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 10, Contenido = "BDE Espesor" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_LEFT, AnchoRelativo = 10, Contenido = "BDE Color" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_RIGHT, AnchoRelativo = 10, Contenido = "Cliente" });
+            columnas.Add(new Informes.Columna() { AlineacionHorizontal = PdfPCell.ALIGN_RIGHT, AnchoRelativo = 10, Contenido = "Pedido" });
             informe.CrearTabla(columnas);
 
             // Obtiene los datos desde la base.
@@ -451,7 +451,7 @@ namespace Pedidos.Controllers
                     tapa = pedido.Articulo as Tapa;
                     contenido = new List<string>();
                     contenido.Add(pedido.SeguimientoGlobal.ConjuntoAtrasado.Cantidad.ToString());
-                    contenido.Add(tapa.ToString("Controllers.InformesController.CorteDeLaminado"));
+                    contenido.Add(tapa.ToString("Controllers.InformesController.MDF"));
                     contenido.Add(tapa.Laminado_CodigoId);
                     contenido.Add(tapa.Borde.TipoNombre);
                     contenido.Add(tapa.Borde.EspesorNombre);
@@ -460,18 +460,27 @@ namespace Pedidos.Controllers
                     contenido.Add(pedido.PedidoId.ToString());
                     informe.AgregarFila(contenido);
 
+                    celda = informe.CeldaDatos(pedido.FechaEntrega.HasValue ? String.Format("PARA EL {0}", pedido.FechaEntrega.Value.ToString("dd/MM")) : String.Format("Pedido el {0}", pedido.Gestion.FechaGestion.ToString("dd/MM")));
+                    celda.HorizontalAlignment = Element.ALIGN_LEFT;
+                    celda.BackgroundColor = BaseColor.LIGHT_GRAY;
+                    informe.Tabla.AddCell(celda);
+
                     if (!String.IsNullOrWhiteSpace(pedido.Articulo.Particularidades) || !String.IsNullOrWhiteSpace(pedido.Observaciones))
                     {
-                        celda = informe.CeldaDatos(pedido.FechaEntrega.HasValue ? String.Format("PARA EL {0}", pedido.FechaEntrega.Value.ToString("dd/MM")) : String.Format("Pedido el {0}", pedido.Gestion.FechaGestion.ToString("dd/MM")));
-                        celda.HorizontalAlignment = Element.ALIGN_LEFT;
-                        informe.Tabla.AddCell(celda);
-
-                        List<string> textos = new List<string>() { tapa.Particularidades, pedido.Observaciones };
-                        celda = informe.CeldaDatos(String.Format("OBS Pedido {0} -> {1}", pedido.PedidoId.ToString(), String.Join(" / ",textos.ToArray())));
+                        List<string> textos = new List<string>();
+                        if (!String.IsNullOrWhiteSpace(tapa.Particularidades)) textos.Add(tapa.Particularidades);
+                        if (!String.IsNullOrWhiteSpace(pedido.Observaciones)) textos.Add(pedido.Observaciones);
+                        celda = informe.CeldaDatos(String.Format((textos.Count == 0) ? " " : "[Pedido {0} --> {1}]", pedido.PedidoId.ToString(), String.Join(" / ", textos.ToArray())));
                         celda.HorizontalAlignment = Element.ALIGN_RIGHT;
-                        celda.Colspan = columnas.Count - 1;
-                        informe.Tabla.AddCell(celda);
                     }
+                    else celda = informe.CeldaDatos(" ");
+
+                    celda.Colspan = columnas.Count - 1;
+                    informe.Tabla.AddCell(celda);
+
+                    celda = informe.CeldaDatos(" ");
+                    celda.Colspan = columnas.Count;
+                    informe.Tabla.AddCell(celda);
 
                 }
 
@@ -667,6 +676,10 @@ namespace Pedidos.Controllers.Informes
 
             configuracion.Add("DadoDeBaja", pedido.FechaBaja.HasValue);
 
+            #endregion
+
+            #region Rescate de Adjuntos
+                
             #endregion
 
             foreach (var item in parArticulo.Item2)

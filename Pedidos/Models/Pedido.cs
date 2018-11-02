@@ -1143,6 +1143,11 @@ namespace Pedidos.Models
                     if (this.Borde.Color.HasValue && this.Borde.Color.Value != ColoresDeBordesDeTapas.NC && this.Borde.Color.Value != ColoresDeBordesDeTapas.NE) partes.Add(this.Borde.ColorNombre);
                     break;
 
+                case "Controllers.InformesController.MDF":
+                    partes.Add(this.TipoNombre);
+                    if (!String.IsNullOrWhiteSpace(this.Medida)) partes.Add(this.Medida);
+                    break;
+
                 default:
                     return this.ToString();
 

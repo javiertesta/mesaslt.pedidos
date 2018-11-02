@@ -362,7 +362,7 @@ namespace Pedidos.DAL
                 .Where(p => (p.Articulo as Tapa).Borde.Tipo == TiposDeBordesDeTapas.BordeMDF || (p.Articulo as Tapa).Borde.Tipo == TiposDeBordesDeTapas.BordeMDFINV)
                 //.ToList()
                 .OrderByDescending(p => p.FechaEntrega)
-                .ThenByDescending(p => p.Gestion.FechaGestion)
+                .ThenBy(p => p.Gestion.FechaGestion)
                 .ToList();
             return entidades;
 
